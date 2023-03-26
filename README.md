@@ -1,1 +1,1 @@
-# react-redux-starter
+# Typing Speed Test
