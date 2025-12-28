@@ -38,21 +38,17 @@ const App = () => {
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      // Ignore if modal is open or modifier keys
       if (isComplete) return;
       if (e.ctrlKey || e.altKey || e.metaKey) return;
 
-      // Handle backspace
       if (e.key === "Backspace") {
         e.preventDefault();
         actions.deleteCharacter();
         return;
       }
 
-      // Ignore special keys
       if (e.key.length !== 1) return;
 
-      // Start test on first character
       if (!isActive) {
         actions.startTest();
       }
@@ -62,7 +58,6 @@ const App = () => {
     [actions, isActive, isComplete],
   );
 
-  // Global keyboard listener
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
@@ -92,8 +87,14 @@ const App = () => {
   );
 
   return (
-    <div className="app">
-      <div className="container">
+    <div className="min-h-screen flex flex-col relative">
+      {/* Keyboard background decoration */}
+      <div
+        className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-48 opacity-10 pointer-events-none z-0 bg-[url('/images/keyboard.jpeg')] bg-no-repeat bg-bottom bg-contain"
+        aria-hidden="true"
+      />
+
+      <div className="max-w-4xl mx-auto px-6 py-8 flex-1 relative z-10 w-full">
         <Header />
 
         <SettingsPanel
@@ -113,10 +114,17 @@ const App = () => {
         {isComplete && <ResultsModal onRestart={handleRestart} />}
       </div>
 
-      <footer className="footer">
+      <footer className="text-center py-6 text-text-muted text-sm relative z-10">
         <p>
-          Start typing to begin • Press <kbd>Tab</kbd> + <kbd>Enter</kbd> to
-          restart
+          Start typing to begin • Press{" "}
+          <kbd className="bg-white/10 border border-white/20 rounded px-2 py-0.5 font-mono text-xs shadow-sm">
+            Tab
+          </kbd>{" "}
+          +{" "}
+          <kbd className="bg-white/10 border border-white/20 rounded px-2 py-0.5 font-mono text-xs shadow-sm">
+            Enter
+          </kbd>{" "}
+          to restart
         </p>
       </footer>
     </div>

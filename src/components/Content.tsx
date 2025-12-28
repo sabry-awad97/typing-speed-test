@@ -6,26 +6,41 @@ export function Content() {
   );
 
   return (
-    <div className="content-container">
-      <div className="text-display">
+    <div
+      className="bg-black/40 border border-glass-border rounded-2xl p-8 mb-6 min-h-44 backdrop-blur-xl shadow-inner animate-fade-in-up"
+      style={{ animationDelay: "0.3s", animationFillMode: "both" }}
+    >
+      <div className="font-mono text-2xl leading-loose tracking-wide break-words select-none">
         {text.split("").map((char, index) => {
-          let className = "char";
+          let className = "transition-colors duration-150 ";
 
           if (index < currentIndex) {
             className +=
-              charStatuses[index] === "correct" ? " correct" : " incorrect";
+              charStatuses[index] === "correct"
+                ? "text-success"
+                : "text-danger underline decoration-wavy underline-offset-4";
           } else if (index === currentIndex) {
-            className += " current";
+            className += "text-text-primary animate-blink rounded-sm";
+            // Add highlight background for current character
+            return (
+              <span
+                key={index}
+                className={className}
+                style={{
+                  background:
+                    "linear-gradient(180deg, transparent 60%, oklch(0.65 0.24 264 / 0.5) 60%)",
+                }}
+              >
+                {char === " " ? "\u00A0" : char}
+              </span>
+            );
           } else {
-            className += " pending";
+            className += "text-text-muted";
           }
-
-          // Handle space characters
-          const displayChar = char === " " ? "\u00A0" : char;
 
           return (
             <span key={index} className={className}>
-              {displayChar}
+              {char === " " ? "\u00A0" : char}
             </span>
           );
         })}

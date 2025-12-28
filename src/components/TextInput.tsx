@@ -10,7 +10,6 @@ export function TextInput({ onRestart, isActive }: TextInputProps) {
   const tabPressedRef = useRef(false);
 
   useEffect(() => {
-    // Focus input on mount
     inputRef.current?.focus();
   }, []);
 
@@ -18,7 +17,6 @@ export function TextInput({ onRestart, isActive }: TextInputProps) {
     if (e.key === "Tab") {
       e.preventDefault();
       tabPressedRef.current = true;
-      // Reset after a short delay
       setTimeout(() => {
         tabPressedRef.current = false;
       }, 500);
@@ -32,11 +30,14 @@ export function TextInput({ onRestart, isActive }: TextInputProps) {
   };
 
   return (
-    <div className="input-container">
+    <div
+      className="flex gap-4 mb-8 animate-fade-in-up"
+      style={{ animationDelay: "0.4s", animationFillMode: "both" }}
+    >
       <input
         ref={inputRef}
         type="text"
-        className="typing-input"
+        className="flex-1 bg-black/40 border-2 border-glass-border rounded-xl px-6 py-4 font-mono text-lg text-text-primary outline-none backdrop-blur-xl transition-all duration-300 placeholder:text-text-muted focus:border-primary focus:shadow-lg focus:shadow-primary/30"
         placeholder={
           isActive ? "Keep typing..." : "Click here and start typing..."
         }
@@ -46,8 +47,13 @@ export function TextInput({ onRestart, isActive }: TextInputProps) {
         autoCapitalize="off"
         spellCheck={false}
       />
-      <button className="restart-button" onClick={onRestart}>
-        <span className="restart-icon">↻</span>
+      <button
+        className="flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-primary to-accent border-none rounded-xl text-white text-base font-semibold cursor-pointer transition-all duration-300 shadow-lg shadow-primary/30 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-accent/40 active:translate-y-0 group"
+        onClick={onRestart}
+      >
+        <span className="text-xl transition-transform duration-300 group-hover:rotate-180">
+          ↻
+        </span>
         Restart
       </button>
     </div>

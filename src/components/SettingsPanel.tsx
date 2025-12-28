@@ -29,15 +29,24 @@ export function SettingsPanel({
   disabled,
 }: SettingsPanelProps) {
   return (
-    <div className={`settings-panel ${disabled ? "disabled" : ""}`}>
-      <div className="settings-group">
-        <span className="settings-label">Duration:</span>
-        <div className="button-group">
+    <div
+      className={`flex justify-center gap-10 mb-8 p-5 bg-glass border border-glass-border rounded-2xl backdrop-blur-xl animate-fade-in-up ${
+        disabled ? "opacity-50 pointer-events-none" : ""
+      }`}
+      style={{ animationDelay: "0.1s", animationFillMode: "both" }}
+    >
+      <div className="flex items-center gap-4">
+        <span className="text-text-secondary text-sm font-medium">
+          Duration:
+        </span>
+        <div className="flex gap-1 bg-black/30 p-1 rounded-xl">
           {durations.map((d) => (
             <button
               key={d.value}
-              className={`setting-button ${
-                duration === d.value ? "active" : ""
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-150 ${
+                duration === d.value
+                  ? "bg-gradient-to-r from-primary to-accent text-white shadow-lg shadow-primary/30"
+                  : "text-text-secondary hover:text-text-primary hover:bg-white/10"
               }`}
               onClick={() => !disabled && onDurationChange(d.value)}
               disabled={disabled}
@@ -48,19 +57,23 @@ export function SettingsPanel({
         </div>
       </div>
 
-      <div className="settings-group">
-        <span className="settings-label">Difficulty:</span>
-        <div className="button-group">
+      <div className="flex items-center gap-4">
+        <span className="text-text-secondary text-sm font-medium">
+          Difficulty:
+        </span>
+        <div className="flex gap-1 bg-black/30 p-1 rounded-xl">
           {difficulties.map((d) => (
             <button
               key={d.value}
-              className={`setting-button ${
-                difficulty === d.value ? "active" : ""
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-150 flex items-center gap-1.5 ${
+                difficulty === d.value
+                  ? "bg-gradient-to-r from-primary to-accent text-white shadow-lg shadow-primary/30"
+                  : "text-text-secondary hover:text-text-primary hover:bg-white/10"
               }`}
               onClick={() => !disabled && onDifficultyChange(d.value)}
               disabled={disabled}
             >
-              <span className="emoji">{d.emoji}</span> {d.label}
+              <span>{d.emoji}</span> {d.label}
             </button>
           ))}
         </div>

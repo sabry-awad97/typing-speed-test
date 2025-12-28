@@ -6,15 +6,15 @@ export function StatsPanel() {
   );
 
   const getAccuracyClass = () => {
-    if (stats.accuracy >= 95) return "stat-value accuracy-high";
-    if (stats.accuracy >= 85) return "stat-value accuracy-medium";
-    return "stat-value accuracy-low";
+    if (stats.accuracy >= 95) return "text-success";
+    if (stats.accuracy >= 85) return "text-warning";
+    return "text-danger";
   };
 
   const getTimeClass = () => {
-    if (timeRemaining <= 10) return "stat-value time-critical";
-    if (timeRemaining <= 20) return "stat-value time-warning";
-    return "stat-value";
+    if (timeRemaining <= 10) return "text-danger animate-pulse-glow";
+    if (timeRemaining <= 20) return "text-warning animate-pulse-glow";
+    return "";
   };
 
   const formatTime = (seconds: number) => {
@@ -26,45 +26,68 @@ export function StatsPanel() {
   };
 
   return (
-    <div className="stats-panel">
-      <div className="stat-card">
-        <div className="stat-icon">
-          <img src="/images/speed2.png" alt="WPM" />
+    <div
+      className="grid grid-cols-4 gap-4 mb-8 animate-fade-in-up"
+      style={{ animationDelay: "0.2s", animationFillMode: "both" }}
+    >
+      <StatCard icon="/images/speed2.png" value={stats.wpm} label="WPM" />
+      <StatCard icon="/images/cpm.png" value={stats.cpm} label="CPM" />
+      <StatCard
+        icon="/images/accuracy.png"
+        value={`${stats.accuracy}%`}
+        label="Accuracy"
+        valueClass={getAccuracyClass()}
+      />
+      <div className="relative bg-glass border border-glass-border rounded-2xl p-5 text-center backdrop-blur-xl transition-all duration-300 hover:border-glass-border-hover hover:-translate-y-1 hover:shadow-xl overflow-hidden group">
+        <div className="w-12 h-12 mx-auto mb-2 flex items-center justify-center">
+          <img
+            src="/images/stopwatch.png"
+            alt="Time"
+            className="max-w-full max-h-full object-contain drop-shadow-lg transition-transform duration-300 group-hover:scale-110"
+          />
         </div>
-        <div className="stat-value">{stats.wpm}</div>
-        <div className="stat-label">WPM</div>
-      </div>
-
-      <div className="stat-card">
-        <div className="stat-icon">
-          <img src="/images/cpm.png" alt="CPM" />
+        <div className={`text-3xl font-bold font-mono ${getTimeClass()}`}>
+          {formatTime(timeRemaining)}
         </div>
-        <div className="stat-value">{stats.cpm}</div>
-        <div className="stat-label">CPM</div>
-      </div>
-
-      <div className="stat-card">
-        <div className="stat-icon">
-          <img src="/images/accuracy.png" alt="Accuracy" />
+        <div className="text-xs text-text-secondary uppercase tracking-wider mt-1">
+          Time Left
         </div>
-        <div className={getAccuracyClass()}>{stats.accuracy}%</div>
-        <div className="stat-label">Accuracy</div>
-      </div>
-
-      <div className="stat-card">
-        <div className="stat-icon">
-          <img src="/images/stopwatch.png" alt="Time" />
-        </div>
-        <div className={getTimeClass()}>{formatTime(timeRemaining)}</div>
-        <div className="stat-label">Time Left</div>
         {isActive && (
           <div
-            className="time-progress"
-            style={{
-              width: `${(timeRemaining / settings.duration) * 100}%`,
-            }}
+            className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-primary via-accent to-cyan-400 shadow-lg shadow-primary/50 transition-all duration-1000"
+            style={{ width: `${(timeRemaining / settings.duration) * 100}%` }}
           />
         )}
+      </div>
+    </div>
+  );
+}
+
+function StatCard({
+  icon,
+  value,
+  label,
+  valueClass = "",
+}: {
+  icon: string;
+  value: string | number;
+  label: string;
+  valueClass?: string;
+}) {
+  return (
+    <div className="bg-glass border border-glass-border rounded-2xl p-5 text-center backdrop-blur-xl transition-all duration-300 hover:border-glass-border-hover hover:-translate-y-1 hover:shadow-xl group">
+      <div className="w-12 h-12 mx-auto mb-2 flex items-center justify-center">
+        <img
+          src={icon}
+          alt={label}
+          className="max-w-full max-h-full object-contain drop-shadow-lg transition-transform duration-300 group-hover:scale-110"
+        />
+      </div>
+      <div className={`text-3xl font-bold font-mono ${valueClass}`}>
+        {value}
+      </div>
+      <div className="text-xs text-text-secondary uppercase tracking-wider mt-1">
+        {label}
       </div>
     </div>
   );
