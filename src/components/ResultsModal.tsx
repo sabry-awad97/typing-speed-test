@@ -29,6 +29,13 @@ export function ResultsModal({ onRestart }: ResultsModalProps) {
     <div className="modal-overlay">
       <div className="modal-content">
         <div className="modal-header">
+          <div className="certificate-badge">
+            <img
+              src="/images/certificate.png"
+              alt="Certificate"
+              className="certificate-img"
+            />
+          </div>
           <span className="rating-emoji">{rating.emoji}</span>
           <h2>Test Complete!</h2>
           <p className="rating-label" style={{ color: rating.color }}>
