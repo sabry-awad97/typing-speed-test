@@ -14,45 +14,31 @@ const App = () => {
   );
   const timerRef = useRef<number | null>(null);
 
-  // Handle timer
   useEffect(() => {
     if (isActive && !isComplete) {
       timerRef.current = window.setInterval(() => {
         actions.tick();
       }, 1000);
     }
-
     return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
+      if (timerRef.current) clearInterval(timerRef.current);
     };
   }, [isActive, isComplete, actions]);
 
-  // Stop timer when complete
   useEffect(() => {
-    if (isComplete && timerRef.current) {
-      clearInterval(timerRef.current);
-    }
+    if (isComplete && timerRef.current) clearInterval(timerRef.current);
   }, [isComplete]);
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (isComplete) return;
-      if (e.ctrlKey || e.altKey || e.metaKey) return;
-
+      if (isComplete || e.ctrlKey || e.altKey || e.metaKey) return;
       if (e.key === "Backspace") {
         e.preventDefault();
         actions.deleteCharacter();
         return;
       }
-
       if (e.key.length !== 1) return;
-
-      if (!isActive) {
-        actions.startTest();
-      }
-
+      if (!isActive) actions.startTest();
       actions.typeCharacter(e.key);
     },
     [actions, isActive, isComplete],
@@ -64,9 +50,7 @@ const App = () => {
   }, [handleKeyDown]);
 
   const handleRestart = useCallback(() => {
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-    }
+    if (timerRef.current) clearInterval(timerRef.current);
     actions.resetTest();
   }, [actions]);
 
@@ -88,15 +72,24 @@ const App = () => {
 
   return (
     <div className="min-h-screen flex flex-col relative">
-      {/* Keyboard background decoration */}
+      {/* Decorative elements */}
       <div
-        className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-48 opacity-10 pointer-events-none z-0 bg-[url('/images/keyboard.jpeg')] bg-no-repeat bg-bottom bg-contain"
+        className="fixed inset-0 overflow-hidden pointer-events-none z-0"
         aria-hidden="true"
-      />
+      >
+        {/* Floating orbs */}
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-primary/5 blur-3xl animate-float" />
+        <div
+          className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full bg-accent/5 blur-3xl animate-float"
+          style={{ animationDelay: "-1s" }}
+        />
 
-      <div className="max-w-4xl mx-auto px-6 py-8 flex-1 relative z-10 w-full">
+        {/* Keyboard background */}
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-52 opacity-[0.06] bg-[url('/images/keyboard.jpeg')] bg-no-repeat bg-bottom bg-contain" />
+      </div>
+
+      <main className="max-w-4xl w-full mx-auto px-6 py-10 flex-1 relative z-10">
         <Header />
-
         <SettingsPanel
           duration={settings.duration}
           difficulty={settings.difficulty}
@@ -104,27 +97,27 @@ const App = () => {
           onDifficultyChange={handleDifficultyChange}
           disabled={isActive}
         />
-
         <StatsPanel />
-
         <Content />
-
         <TextInput onRestart={handleRestart} isActive={isActive} />
-
         {isComplete && <ResultsModal onRestart={handleRestart} />}
-      </div>
+      </main>
 
       <footer className="text-center py-6 text-text-muted text-sm relative z-10">
-        <p>
-          Start typing to begin • Press{" "}
-          <kbd className="bg-white/10 border border-white/20 rounded px-2 py-0.5 font-mono text-xs shadow-sm">
-            Tab
-          </kbd>{" "}
-          +{" "}
-          <kbd className="bg-white/10 border border-white/20 rounded px-2 py-0.5 font-mono text-xs shadow-sm">
-            Enter
-          </kbd>{" "}
-          to restart
+        <p className="flex items-center justify-center gap-2 flex-wrap">
+          <span>Start typing to begin</span>
+          <span className="text-text-muted/50">•</span>
+          <span className="flex items-center gap-1.5">
+            Press
+            <kbd className="px-2 py-1 bg-white/5 border border-white/10 rounded-md font-mono text-xs text-text-secondary shadow-sm">
+              Tab
+            </kbd>
+            <span>+</span>
+            <kbd className="px-2 py-1 bg-white/5 border border-white/10 rounded-md font-mono text-xs text-text-secondary shadow-sm">
+              Enter
+            </kbd>
+            to restart
+          </span>
         </p>
       </footer>
     </div>

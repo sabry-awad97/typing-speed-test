@@ -30,54 +30,89 @@ export function SettingsPanel({
 }: SettingsPanelProps) {
   return (
     <div
-      className={`flex justify-center gap-10 mb-8 p-5 bg-glass border border-glass-border rounded-2xl backdrop-blur-xl animate-fade-in-up ${
-        disabled ? "opacity-50 pointer-events-none" : ""
-      }`}
+      className={`
+        flex flex-wrap justify-center gap-8 mb-10 p-4 
+        glass-card rounded-2xl
+        animate-fade-in-up transition-opacity duration-300
+        ${disabled ? "opacity-40 pointer-events-none" : ""}
+      `}
       style={{ animationDelay: "0.1s", animationFillMode: "both" }}
     >
-      <div className="flex items-center gap-4">
-        <span className="text-text-secondary text-sm font-medium">
-          Duration:
-        </span>
-        <div className="flex gap-1 bg-black/30 p-1 rounded-xl">
-          {durations.map((d) => (
-            <button
-              key={d.value}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-150 ${
-                duration === d.value
-                  ? "bg-gradient-to-r from-primary to-accent text-white shadow-lg shadow-primary/30"
-                  : "text-text-secondary hover:text-text-primary hover:bg-white/10"
-              }`}
-              onClick={() => !disabled && onDurationChange(d.value)}
-              disabled={disabled}
-            >
-              {d.label}
-            </button>
-          ))}
-        </div>
-      </div>
+      <SettingGroup label="Duration">
+        {durations.map((d) => (
+          <ToggleButton
+            key={d.value}
+            active={duration === d.value}
+            onClick={() => onDurationChange(d.value)}
+            disabled={disabled}
+          >
+            {d.label}
+          </ToggleButton>
+        ))}
+      </SettingGroup>
 
-      <div className="flex items-center gap-4">
-        <span className="text-text-secondary text-sm font-medium">
-          Difficulty:
-        </span>
-        <div className="flex gap-1 bg-black/30 p-1 rounded-xl">
-          {difficulties.map((d) => (
-            <button
-              key={d.value}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-150 flex items-center gap-1.5 ${
-                difficulty === d.value
-                  ? "bg-gradient-to-r from-primary to-accent text-white shadow-lg shadow-primary/30"
-                  : "text-text-secondary hover:text-text-primary hover:bg-white/10"
-              }`}
-              onClick={() => !disabled && onDifficultyChange(d.value)}
-              disabled={disabled}
-            >
-              <span>{d.emoji}</span> {d.label}
-            </button>
-          ))}
-        </div>
-      </div>
+      <div className="w-px bg-glass-border hidden sm:block" />
+
+      <SettingGroup label="Difficulty">
+        {difficulties.map((d) => (
+          <ToggleButton
+            key={d.value}
+            active={difficulty === d.value}
+            onClick={() => onDifficultyChange(d.value)}
+            disabled={disabled}
+          >
+            <span className="mr-1">{d.emoji}</span>
+            {d.label}
+          </ToggleButton>
+        ))}
+      </SettingGroup>
     </div>
+  );
+}
+
+function SettingGroup({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="flex items-center gap-3">
+      <span className="text-text-secondary text-sm font-medium tracking-wide uppercase">
+        {label}
+      </span>
+      <div className="flex gap-1 p-1 bg-black/20 rounded-xl">{children}</div>
+    </div>
+  );
+}
+
+function ToggleButton({
+  active,
+  onClick,
+  disabled,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  disabled: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      className={`
+        px-4 py-2 rounded-lg text-sm font-semibold
+        transition-all duration-200 ease-out
+        ${
+          active
+            ? "gradient-button text-white glow-primary"
+            : "text-text-secondary hover:text-text-primary hover:bg-white/5"
+        }
+      `}
+      onClick={onClick}
+      disabled={disabled}
+    >
+      <span className="relative z-10 flex items-center">{children}</span>
+    </button>
   );
 }

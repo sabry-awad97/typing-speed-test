@@ -1,50 +1,59 @@
 @import "tailwindcss";
 
 /* ============================================
-   TypeMaster - Tailwind CSS v4 Configuration
+   TypeMaster - Premium Typing Speed Test
+   Tailwind CSS v4 Theme Configuration
    ============================================ */
 
-/* ---------- Custom Theme Variables ---------- */
 @theme {
-  /* Colors */
+  /* Primary Palette - Indigo to Purple */
   --color-primary: oklch(0.65 0.24 264);
   --color-primary-light: oklch(0.75 0.2 264);
   --color-primary-dark: oklch(0.55 0.28 264);
 
+  /* Accent - Magenta/Violet */
   --color-accent: oklch(0.7 0.25 300);
   --color-accent-light: oklch(0.8 0.2 300);
 
+  /* Cyan highlight */
+  --color-cyan: oklch(0.8 0.15 195);
+
+  /* Semantic Colors */
   --color-success: oklch(0.72 0.19 160);
   --color-warning: oklch(0.78 0.18 70);
   --color-danger: oklch(0.65 0.22 25);
 
-  --color-bg-primary: oklch(0.13 0.02 264);
-  --color-bg-secondary: oklch(0.16 0.02 264);
-  --color-bg-card: oklch(0.19 0.02 264);
-  --color-bg-elevated: oklch(0.22 0.02 264);
+  /* Background Layers */
+  --color-bg-primary: oklch(0.08 0.03 280);
+  --color-bg-secondary: oklch(0.11 0.03 280);
+  --color-bg-card: oklch(0.14 0.025 280);
+  --color-bg-elevated: oklch(0.18 0.02 280);
 
-  --color-text-primary: oklch(0.95 0 0);
-  --color-text-secondary: oklch(0.7 0.02 264);
-  --color-text-muted: oklch(0.5 0.02 264);
+  /* Text Hierarchy */
+  --color-text-primary: oklch(0.96 0 0);
+  --color-text-secondary: oklch(0.72 0.02 280);
+  --color-text-muted: oklch(0.5 0.02 280);
 
-  --color-glass: oklch(1 0 0 / 0.03);
-  --color-glass-hover: oklch(1 0 0 / 0.06);
-  --color-glass-border: oklch(1 0 0 / 0.08);
-  --color-glass-border-hover: oklch(1 0 0 / 0.15);
+  /* Glass Effects */
+  --color-glass: oklch(1 0 0 / 0.04);
+  --color-glass-hover: oklch(1 0 0 / 0.08);
+  --color-glass-border: oklch(1 0 0 / 0.1);
+  --color-glass-border-hover: oklch(1 0 0 / 0.18);
 
-  /* Fonts */
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  /* Typography */
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
 
-  /* Animations */
+  /* Custom Animations */
   --animate-fade-in: fade-in 0.3s ease-out;
-  --animate-fade-in-up: fade-in-up 0.6s ease-out;
-  --animate-fade-in-down: fade-in-down 0.6s ease-out;
-  --animate-scale-in: scale-in 0.4s ease-out;
+  --animate-fade-in-up: fade-in-up 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-fade-in-down: fade-in-down 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-scale-in: scale-in 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   --animate-bounce-subtle: bounce-subtle 2s ease-in-out infinite;
   --animate-float: float 3s ease-in-out infinite;
-  --animate-blink: blink 1s infinite;
-  --animate-pulse-glow: pulse-glow 1s infinite;
+  --animate-blink: blink 1s step-end infinite;
+  --animate-pulse-glow: pulse-glow 1.5s ease-in-out infinite;
+  --animate-shimmer: shimmer 2s linear infinite;
 }
 
 /* ---------- Custom Keyframes ---------- */
@@ -60,7 +69,7 @@
 @keyframes fade-in-up {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(24px);
   }
   to {
     opacity: 1;
@@ -71,7 +80,7 @@
 @keyframes fade-in-down {
   from {
     opacity: 0;
-    transform: translateY(-20px);
+    transform: translateY(-24px);
   }
   to {
     opacity: 1;
@@ -82,7 +91,7 @@
 @keyframes scale-in {
   from {
     opacity: 0;
-    transform: scale(0.9);
+    transform: scale(0.95);
   }
   to {
     opacity: 1;
@@ -96,7 +105,7 @@
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-10px);
+    transform: translateY(-8px);
   }
 }
 
@@ -106,7 +115,7 @@
     transform: translateY(0) rotate(0deg);
   }
   50% {
-    transform: translateY(-8px) rotate(3deg);
+    transform: translateY(-6px) rotate(2deg);
   }
 }
 
@@ -116,7 +125,7 @@
     opacity: 1;
   }
   50% {
-    opacity: 0.5;
+    opacity: 0;
   }
 }
 
@@ -124,27 +133,118 @@
   0%,
   100% {
     opacity: 1;
-    transform: scale(1);
   }
   50% {
-    opacity: 0.7;
-    transform: scale(1.02);
+    opacity: 0.6;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
   }
 }
 
 /* ---------- Base Styles ---------- */
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  @apply font-sans text-text-primary leading-relaxed min-h-screen overflow-x-hidden;
-  background:
-    linear-gradient(
-      180deg,
-      oklch(0.1 0.02 264 / 0.85) 0%,
-      oklch(0.1 0.02 264 / 0.7) 50%,
-      oklch(0.1 0.02 264 / 0.9) 100%
+  @apply font-sans text-text-primary leading-relaxed min-h-screen overflow-x-hidden antialiased;
+  background: var(--color-bg-primary);
+
+  /* Multi-layer gradient background */
+  background-image:
+    /* Aurora glow top-left */
+    radial-gradient(
+      ellipse 80% 50% at 20% -20%,
+      oklch(0.45 0.2 280 / 0.4),
+      transparent
     ),
-    url("/images/aurora.jpg") no-repeat center center;
-  background-size: cover;
+    /* Aurora glow bottom-right */
+    radial-gradient(
+        ellipse 60% 40% at 80% 120%,
+        oklch(0.4 0.18 195 / 0.3),
+        transparent
+      ),
+    /* Subtle center glow */
+    radial-gradient(
+        ellipse 50% 30% at 50% 50%,
+        oklch(0.2 0.1 300 / 0.15),
+        transparent
+      ),
+    /* Base gradient */
+    linear-gradient(
+        180deg,
+        var(--color-bg-primary) 0%,
+        oklch(0.1 0.04 280) 100%
+      );
+
   background-attachment: fixed;
+}
+
+/* ---------- Utility Classes ---------- */
+.glass-card {
+  @apply bg-glass backdrop-blur-2xl border border-glass-border;
+  box-shadow:
+    0 0 0 1px oklch(1 0 0 / 0.05) inset,
+    0 4px 24px -4px oklch(0 0 0 / 0.3);
+}
+
+.glass-card:hover {
+  @apply border-glass-border-hover bg-glass-hover;
+}
+
+.gradient-text {
+  @apply bg-clip-text text-transparent;
+  background-image: linear-gradient(
+    135deg,
+    var(--color-primary-light),
+    var(--color-accent),
+    var(--color-cyan)
+  );
+}
+
+.gradient-button {
+  @apply relative overflow-hidden;
+  background: linear-gradient(
+    135deg,
+    var(--color-primary) 0%,
+    var(--color-accent) 100%
+  );
+  box-shadow:
+    0 4px 16px -2px oklch(0.55 0.25 280 / 0.4),
+    0 0 0 1px oklch(1 0 0 / 0.1) inset;
+}
+
+.gradient-button::before {
+  @apply absolute inset-0 opacity-0 transition-opacity duration-300;
+  content: "";
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-light) 0%,
+    var(--color-accent-light) 100%
+  );
+}
+
+.gradient-button:hover::before {
+  @apply opacity-100;
+}
+
+.glow-primary {
+  box-shadow: 0 0 30px -5px oklch(0.55 0.25 280 / 0.5);
+}
+
+.glow-success {
+  text-shadow: 0 0 12px oklch(0.7 0.2 160 / 0.6);
+}
+
+.glow-danger {
+  text-shadow: 0 0 12px oklch(0.6 0.22 25 / 0.6);
 }
 
 /* ---------- Scrollbar Styling ---------- */
@@ -153,17 +253,25 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-bg-secondary;
+  background: oklch(0.1 0.02 280);
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-text-muted rounded-full;
+  @apply rounded-full;
+  background: oklch(0.35 0.03 280);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-text-secondary;
+  background: oklch(0.45 0.04 280);
 }
 
+/* ---------- Selection Styling ---------- */
 ::selection {
-  @apply bg-primary/40 text-text-primary;
+  background: oklch(0.55 0.2 280 / 0.4);
+  color: var(--color-text-primary);
+}
+
+/* ---------- Focus Styles ---------- */
+:focus-visible {
+  @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-bg-primary;
 }

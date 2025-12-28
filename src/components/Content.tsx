@@ -7,39 +7,52 @@ export function Content() {
 
   return (
     <div
-      className="bg-black/40 border border-glass-border rounded-2xl p-8 mb-6 min-h-44 backdrop-blur-xl shadow-inner animate-fade-in-up"
+      className="
+        relative bg-bg-card/80 backdrop-blur-xl 
+        border border-glass-border rounded-2xl 
+        p-8 mb-8 min-h-48
+        shadow-[inset_0_2px_20px_rgba(0,0,0,0.3)]
+        animate-fade-in-up
+      "
       style={{ animationDelay: "0.3s", animationFillMode: "both" }}
     >
-      <div className="font-mono text-2xl leading-loose tracking-wide break-words select-none">
+      <div className="font-mono text-xl sm:text-2xl leading-[2.5] tracking-wide break-words select-none">
         {text.split("").map((char, index) => {
-          let className = "transition-colors duration-150 ";
+          const isCorrect = charStatuses[index] === "correct";
+          const isIncorrect = charStatuses[index] === "incorrect";
+          const isCurrent = index === currentIndex;
+          const isPending = index > currentIndex;
 
-          if (index < currentIndex) {
-            className +=
-              charStatuses[index] === "correct"
-                ? "text-success"
-                : "text-danger underline decoration-wavy underline-offset-4";
-          } else if (index === currentIndex) {
-            className += "text-text-primary animate-blink rounded-sm";
-            // Add highlight background for current character
+          if (isCurrent) {
+            return (
+              <span key={index} className="relative text-text-primary">
+                <span className="animate-blink absolute -bottom-1 left-0 right-0 h-0.5 bg-primary rounded-full" />
+                {char === " " ? "\u00A0" : char}
+              </span>
+            );
+          }
+
+          if (isCorrect) {
+            return (
+              <span key={index} className="text-success glow-success">
+                {char === " " ? "\u00A0" : char}
+              </span>
+            );
+          }
+
+          if (isIncorrect) {
             return (
               <span
                 key={index}
-                className={className}
-                style={{
-                  background:
-                    "linear-gradient(180deg, transparent 60%, oklch(0.65 0.24 264 / 0.5) 60%)",
-                }}
+                className="text-danger underline decoration-wavy underline-offset-4 glow-danger"
               >
                 {char === " " ? "\u00A0" : char}
               </span>
             );
-          } else {
-            className += "text-text-muted";
           }
 
           return (
-            <span key={index} className={className}>
+            <span key={index} className="text-text-muted">
               {char === " " ? "\u00A0" : char}
             </span>
           );

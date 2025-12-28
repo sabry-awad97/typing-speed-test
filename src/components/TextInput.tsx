@@ -17,9 +17,7 @@ export function TextInput({ onRestart, isActive }: TextInputProps) {
     if (e.key === "Tab") {
       e.preventDefault();
       tabPressedRef.current = true;
-      setTimeout(() => {
-        tabPressedRef.current = false;
-      }, 500);
+      setTimeout(() => (tabPressedRef.current = false), 500);
     }
 
     if (e.key === "Enter" && tabPressedRef.current) {
@@ -31,13 +29,23 @@ export function TextInput({ onRestart, isActive }: TextInputProps) {
 
   return (
     <div
-      className="flex gap-4 mb-8 animate-fade-in-up"
+      className="flex flex-col sm:flex-row gap-4 mb-8 animate-fade-in-up"
       style={{ animationDelay: "0.4s", animationFillMode: "both" }}
     >
       <input
         ref={inputRef}
         type="text"
-        className="flex-1 bg-black/40 border-2 border-glass-border rounded-xl px-6 py-4 font-mono text-lg text-text-primary outline-none backdrop-blur-xl transition-all duration-300 placeholder:text-text-muted focus:border-primary focus:shadow-lg focus:shadow-primary/30"
+        className="
+          flex-1 
+          bg-bg-card/60 backdrop-blur-xl
+          border-2 border-glass-border 
+          rounded-xl px-6 py-4 
+          font-mono text-lg text-text-primary 
+          outline-none
+          transition-all duration-300
+          placeholder:text-text-muted
+          focus:border-primary focus:shadow-[0_0_30px_-5px] focus:shadow-primary/40
+        "
         placeholder={
           isActive ? "Keep typing..." : "Click here and start typing..."
         }
@@ -48,13 +56,25 @@ export function TextInput({ onRestart, isActive }: TextInputProps) {
         spellCheck={false}
       />
       <button
-        className="flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-primary to-accent border-none rounded-xl text-white text-base font-semibold cursor-pointer transition-all duration-300 shadow-lg shadow-primary/30 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-accent/40 active:translate-y-0 group"
+        className="
+          gradient-button
+          flex items-center justify-center gap-2.5 
+          px-8 py-4 
+          rounded-xl 
+          text-white text-base font-semibold 
+          transition-all duration-300
+          hover:-translate-y-0.5 hover:shadow-xl
+          active:translate-y-0
+          group
+        "
         onClick={onRestart}
       >
-        <span className="text-xl transition-transform duration-300 group-hover:rotate-180">
-          ↻
+        <span className="relative z-10 flex items-center gap-2">
+          <span className="text-xl transition-transform duration-300 group-hover:rotate-180">
+            ↻
+          </span>
+          Restart
         </span>
-        Restart
       </button>
     </div>
   );
